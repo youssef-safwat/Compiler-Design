@@ -17,20 +17,13 @@ scanner::~scanner() {
 
 // Define check_reserved function
 token_t scanner::check_reserved(const std::string& s) {
-    token_t t;
     if(s == "cin") {
-        t._token = CIN_SY;
-        t.lexemes = "cin";
+       return {CIN_SY, "cin"};
     }
     else if(s == "cout") {
-        t._token = COUT_SY;
-        t.lexemes = "cout";
-    }
-    else {
-        t._token = ID;
-        t.lexemes = s;
-    }
-    return t;
+        return {COUT_SY, "cout"};
+    } 
+    return {ID, s};
 }
 
 // Define of get_token function
@@ -45,74 +38,39 @@ token_t scanner::get_tokens() {
     }
 
     switch (c) {
-        case '+':
-            t._token = PLUS;
-            t.lexemes = "+";
-            break;
-        case '*':
-            t._token = MULTI;
-            t.lexemes = "*";
-            break;
-        case '/':
-            t._token = DIVISION_SY;
-            t.lexemes = "/";
-            break;
-        case '^':
-            t._token = POWER_SY;
-            t.lexemes = "^";
-            break;
-        case '(':
-            t._token = OPEN_PARANTHESES;
-            t.lexemes = "(";
-            break;
-        case ')':
-            t._token = CLOSE_PARANTHESES;
-            t.lexemes = ")";
-            break;
+        case '+': t = {PLUS, "+"}; break;
+        case '*': t = {MULTI, "*"}; break;
+        case '/': t = {DIVISION_SY, "/"}; break;
+        case '^': t = {POWER_SY, "^"}; break;
+        case '(': t = {OPEN_PARANTHESES, "("}; break;
+        case ')': t = {CLOSE_PARANTHESES, ")"}; break;
         case '<':
             t.lexemes += c;
             f.get(c);
-            if (c == '<') {
-                t._token = LL_SY;
-                t.lexemes += c;
-            } 
-            else if(c == '=') {
-                t._token = LE_SY;
-                t.lexemes += c;
-            }
-            else if(c == '>') {
-                t._token = NE_SY;
-                t.lexemes += c;
-            }
+            if (c == '<') t = {LL_SY, "<<"};
+            else if(c == '=') t = {LE_SY, "<="};
+            else if(c == '>') t = {NE_SY, "<>"};
             else {
-                t._token = L_SY;
+                t = {L_SY, "<"};
                 f.putback(c);
             }
             break;
         case '>':
-        t.lexemes += c;
+            t.lexemes += c;
             f.get(c);
-            if (c == '>') {
-                t._token = GG_SY;
-                t.lexemes += c;
-            } 
-            else if(c == '=') {
-                t._token = GE_SY;
-                t.lexemes += c;
-            }
+            if (c == '>') t = {GG_SY, ">>"};
+            else if(c == '=') t = {GE_SY, ">="};
             else {
-                t._token = G_SY;
+                t = {G_SY, ">"};
                 f.putback(c);
             }
             break;
         case '=':
             t.lexemes += c;
             f.get(c);
-            if(c == '=') {
-                t.lexemes += c;
-                t._token = EE_SY;
-            } else {
-                t._token = E_SY;
+            if(c == '=') t = {EE_SY, "=="};
+            else {
+                t = {E_SY, "="};
                 f.putback(c);
             }
         // Check if token is number or identifier
@@ -166,10 +124,7 @@ token_t scanner::get_tokens() {
                     t._token = ERROR_SY;
                 }
             }
-            else if (f.eof()) {
-                t.lexemes = "end of file";
-                t._token = _EOF_;
-            }
+            else if (f.eof()) t = {_EOF_, "end of file"};
     }
     return t;
 }
@@ -179,85 +134,39 @@ void scanner::display_tokens() {
     token_t t = get_tokens();
     std::cout << "Toekn\t\t\tLexemes\n";
     std::cout << "----------------------------------\n";
-    while(t._token != _EOF_) {
-        // Switch to display each token
-        switch (t._token)
-        {
-        case PLUS:
-            std::cout << "PLUS\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case MULTI:
-            std::cout << "MULTI\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case CIN_SY:
-            std::cout << "CIN_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case COUT_SY:
-            std::cout << "COUT_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case GG_SY:
-            std::cout << "GG_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case LL_SY:
-            std::cout << "LL_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        case LE_SY:
-            std::cout << "LE_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        case L_SY:
-            std::cout << "L_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        case NE_SY:
-            std::cout << "NE_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        case G_SY:
-            std::cout << "G_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case E_SY:
-            std::cout << "E_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case EE_SY:
-            std::cout << "EE_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case GE_SY:
-            std::cout << "GE_SY\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case OPEN_PARANTHESES:
-            std::cout << "OPEN_PARANTHESES\t" << t.lexemes << '\n';
-            break;
-        
-        case CLOSE_PARANTHESES:
-            std::cout << "CLOSE_PARANTHESES\t" << t.lexemes << '\n';
-            break;
-        
-        case ID:
-            std::cout << "ID\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case INTEGER:
-            std::cout << "INTEGER\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case REAL:
-            std::cout << "REAL\t\t\t" << t.lexemes << '\n';
-            break;
-        
-        case ERROR_SY:
-            std::cout << "ERROR_SY\t\t" << t.lexemes << '\n';
-            break;
-        default:
-            break;
-        }
+    do {
         t = get_tokens();
+        switch (t._token) {
+        case ERROR_SY: std::cout << "ERROR_SY\t\t" << t.lexemes << '\n'; break;
+        case _EOF_: std::cout << "end of file\t\t" << t.lexemes << '\n'; break;
+        default: std::cout << token_to_string(t._token) << t.lexemes << '\n'; break;
+        }
+    } while(t._token != _EOF_);
+}
+
+// Define token_to_string function
+std::string scanner::token_to_string(token t) {
+    switch (t){
+        case PLUS: return "PLUS\t\t\t"; break;
+        case MULTI: return "MULTI\t\t\t"; break;
+        case CIN_SY: return "CIN_SY\t\t\t"; break;
+        case COUT_SY: return "COUT_SY\t\t\t"; break;
+        case GG_SY: return "GG_SY\t\t\t"; break;
+        case LL_SY: return "LL_SY\t\t\t"; break;
+        case LE_SY: return "LE_SY\t\t\t"; break;
+        case L_SY: return "L_SY\t\t\t"; break;
+        case NE_SY: return "NE_SY\t\t\t"; break;
+        case G_SY: return "G_SY\t\t\t"; break;
+        case E_SY: return "E_SY\t\t\t"; break;
+        case EE_SY: return "EE_SY\t\t\t"; break;
+        case GE_SY: return "GE_SY\t\t\t"; break;
+        case OPEN_PARANTHESES: return "OPEN_PARANTHESES\t"; break;
+        case CLOSE_PARANTHESES: return "CLOSE_PARANTHESES\t"; break;
+        case ID: return "ID\t\t\t"; break;
+        case INTEGER: return "INTEGER\t\t\t"; break;
+        case REAL: return "REAL\t\t\t"; break;
+        case POWER_SY: return "POWER_SY\t\t"; break;
+        case DIVISION_SY: return "DIVISION_SY\t\t"; break;
     }
-    std::cout << "_EOF_\t\t\t" << t.lexemes << '\n';
+    return "UNKNOWN_TOKEN";
 }

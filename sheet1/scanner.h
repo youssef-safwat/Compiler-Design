@@ -35,10 +35,15 @@ class scanner {
         // return each token in input file
         token_t get_tokens();
 
-        // display _tokens function
+        // display_tokens function
         // Accept no paramter
         // Display each token and lexemes
         void display_tokens();
+
+        // Token_to_string function
+        // Accept token
+        // Return string descrip this token
+        std::string token_to_string(token);
 };
 
 #endif
