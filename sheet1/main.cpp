@@ -1,6 +1,8 @@
 #include "scanner.h"
 
 int main() {
+    // Declare object of type scanner
     scanner sc("myCode.txt");
-    sc.get_tokens();
+    // Display all tokens
+    sc.display_tokens();
 }

@@ -5,25 +5,39 @@
 #include<fstream>
 #include<string>
 
-enum token{CIN, COUT, IN, OUT, MULTI, PLUS, OPEN_PARANTHESES, CLOSE_PARANTHESES, ID, INTEGER, ERROR, _EOF_};
+enum token{DIVISION_SY, POWER_SY, G_SY, L_SY, GE_SY, LE_SY, E_SY, EE_SY, NE_SY, CIN_SY, COUT_SY, GG_SY, LL_SY, MULTI, PLUS, OPEN_PARANTHESES, CLOSE_PARANTHESES, ID, INTEGER, ERROR_SY, _EOF_, REAL};
+
+//A lexeme is a sequence of characters in the source program that matches the pattern for a token and is identified by the lexical analyzer as an instance of that token.
 
 struct token_t {
-    token t;
-    std::string value = "";
+    token _token;
+    std::string lexemes = "";
 };
 
 class scanner {
     private:
+        // The file that i read from
         std::ifstream f;
 
-        token chech_reserved(const std::string&);
+        // Check_reserved function
+        // Accept one string parameter as a lexemes
+        // Return the token
+        token_t check_reserved(const std::string&);
     public:
+        // Constructor to check that the file is opened
         scanner(const std::string&);
 
+        // distractor to close the file
         ~scanner();
 
-        token get_tokens();
+        // get_tokens function
+        // Accept no paramter
+        // return each token in input file
+        token_t get_tokens();
 
+        // display _tokens function
+        // Accept no paramter
+        // Display each token and lexemes
         void display_tokens();
 };
 
