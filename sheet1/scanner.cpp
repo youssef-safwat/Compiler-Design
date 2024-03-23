@@ -5,7 +5,7 @@ scanner::scanner(const std::string& s) {
     f.open(s);
     // Check if file not opened
     if(!f) {
-        std::cout << "File is not opened\n";
+        cout << "File is not opened\n";
         exit(1);
     }
 }
@@ -16,7 +16,7 @@ scanner::~scanner() {
 }
 
 // Define check_reserved function
-token_t scanner::check_reserved(const std::string& s) {
+token_t scanner::check_reserved(const string& s) {
     if(s == "cin") {
        return {CIN_SY, "cin"};
     }
@@ -132,20 +132,16 @@ token_t scanner::get_tokens() {
 // define of display_tokens function
 void scanner::display_tokens() {
     token_t t = get_tokens();
-    std::cout << "Toekn\t\t\tLexemes\n";
-    std::cout << "----------------------------------\n";
+    cout << "Toekn\t\t\tLexemes\n";
+    cout << "----------------------------------\n";
     do {
         t = get_tokens();
-        switch (t._token) {
-        case ERROR_SY: std::cout << "ERROR_SY\t\t" << t.lexemes << '\n'; break;
-        case _EOF_: std::cout << "end of file\t\t" << t.lexemes << '\n'; break;
-        default: std::cout << token_to_string(t._token) << t.lexemes << '\n'; break;
-        }
+       	cout << token_to_string(t._token) << t.lexemes << '\n'; 
     } while(t._token != _EOF_);
 }
 
 // Define token_to_string function
-std::string scanner::token_to_string(token t) {
+string scanner::token_to_string(token t) {
     switch (t){
         case PLUS: return "PLUS\t\t\t"; break;
         case MULTI: return "MULTI\t\t\t"; break;
@@ -167,6 +163,8 @@ std::string scanner::token_to_string(token t) {
         case REAL: return "REAL\t\t\t"; break;
         case POWER_SY: return "POWER_SY\t\t"; break;
         case DIVISION_SY: return "DIVISION_SY\t\t"; break;
+	case ERROR_SY: return "ERROR_SY\t\t"; break;
+        case _EOF_: return "end of file\t\t"; break;
     }
     return "UNKNOWN_TOKEN";
 }

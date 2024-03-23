@@ -4,7 +4,7 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-
+using std::cout, std::string;
 enum token{DIVISION_SY, POWER_SY, G_SY, L_SY, GE_SY, LE_SY, E_SY, EE_SY, NE_SY, CIN_SY, COUT_SY, GG_SY, LL_SY, MULTI, PLUS, OPEN_PARANTHESES, CLOSE_PARANTHESES, ID, INTEGER, ERROR_SY, _EOF_, REAL};
 
 //A lexeme is a sequence of characters in the source program that matches the pattern for a token and is identified by the lexical analyzer as an instance of that token.

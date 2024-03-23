@@ -1,6 +1,5 @@
 #include<iostream>
-using namespace std;
-
+using std::cout, std::string;
 // comment function
 // Accept String
 // "(L|D|\")*"

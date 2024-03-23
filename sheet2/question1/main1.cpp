@@ -1,5 +1,5 @@
 #include<iostream>
-using namespace std;
+using std::cout, std::string;
 
 // StringStartA function
 // Accept input string

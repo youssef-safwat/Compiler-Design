@@ -1,6 +1,5 @@
 #include<iostream>
-using namespace std;
-
+using std::string, std::cout;
 // RealNumber function
 // Accept StringInput
 // Return accepted D+.D+
