@@ -11,7 +11,7 @@ enum token{DIVISION_SY, POWER_SY, G_SY, L_SY, GE_SY, LE_SY, E_SY, EE_SY, NE_SY, 
 
 struct token_t {
     token _token;
-    std::string lexemes = "";
+    string lexemes = "";
 };
 
 class scanner {
@@ -22,10 +22,10 @@ class scanner {
         // Check_reserved function
         // Accept one string parameter as a lexemes
         // Return the token
-        token_t check_reserved(const std::string&);
+        token_t check_reserved(const string&);
     public:
         // Constructor to check that the file is opened
-        scanner(const std::string&);
+        scanner(const string&);
 
         // distractor to close the file
         ~scanner();
