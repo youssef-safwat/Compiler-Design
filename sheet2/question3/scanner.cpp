@@ -33,18 +33,20 @@ token_t scanner::get_token() {
   while (!f.eof()) {
     switch (current_state) {
     case q0:
-
-      if (isalpha(f.peek())) {
-        f.get(c);
+      f.get(c);
+      if (isalpha(c)) {
         current_state = q1;
         token += c;
-      } else if (isdigit(f.peek())) {
-        f.get(c);
+      } else if (isdigit(c)) {
         current_state = q2;
         token += c;
-      } else if (c == '<')
+      } else if (c == '<') {
+        token += c;
         current_state = q5;
-      else if (c == '(')
+      } else if (c == '>') {
+        token += c;
+        current_state = q10;
+      } else if (c == '(')
         current_state = q7;
       else if (c == ')')
         current_state = q8;
@@ -53,19 +55,159 @@ token_t scanner::get_token() {
       else if (c == '+')
         current_state = q12;
       else if (c == '.') {
-        
-        }
-      else
+        token += c;
+        current_state = q3;
+      } else {
+        token += c;
         current_state = dead_state;
+      }
       break;
     case q1:
-      if(isalnum(f.peek())) {
+      if (isalnum(f.peek())) {
         f.get(c);
         token += c;
         current_state = q1;
       } else {
-          return check_reserved(token);
-        }
+        current_state = q13;
+      }
+      break;
+    case q2:
+      if (isdigit(f.peek())) {
+        f.get(c);
+        token += c;
+        current_state = q2;
+      } else if (f.peek() == '.') {
+        f.get(c);
+        token += c;
+        current_state = q3;
+      } else {
+        current_state = q14;
+      }
+      break;
+    case q3:
+      f.get(c);
+      if (isdigit(c)) {
+        token += c;
+        current_state = q4;
+      } else {
+        token += c;
+        current_state = dead_state;
+      }
+      break;
+    case q4:
+      if (isdigit(f.peek())) {
+        f.get(c);
+        token += c;
+        current_state = q4;
+      } else {
+        current_state = q15;
+      }
+      break;
+    case q5:
+      f.get(c);
+      if (c == '<') {
+        current_state = q6;
+      } else {
+        token += c;
+        current_state = dead_state;
+      }
+      break;
+    case q6:
+      return {llsym, "<<"};
+      break;
+    case q7:
+      return {lpran, "("};
+      break;
+    case q8:
+      return {rpran, ")"};
+      break;
+    case q9:
+      return {multisym, "*"};
+      break;
+    case q10:
+      f.get(c);
+      if (c == '>')
+        current_state = q11;
+      else {
+        token += c;
+        current_state = dead_state;
+      }
+      break;
+    case q11:
+      return {ggsym, ">>"};
+      break;
+    case q12:
+      return {plussym, "+"};
+      break;
+    case q13:
+      return check_reserved(token);
+      break;
+    case q14:
+      return {integer, token};
+      break;
+    case q15:
+      return {real, token};
+      break;
+    case dead_state:
+      return {_ERROR_, token};
+      break;
+    default:
+      break;
     }
   }
+  return {ENDOFFILE, "End of file"};
+}
+
+// Declare display_token function
+void scanner::display_token() {
+  token_t t;
+  cout << "Tokens\t\tLexems\n-------------------------\n";
+  do {
+    t = get_token();
+    cout << token_to_string(t.name) << "\t\t" << t.value << '\n';
+  } while (t.name != ENDOFFILE);
+}
+
+// Declare token_to_string function
+string scanner::token_to_string(tokens t) {
+  switch (t) {
+  case rpran:
+    return "rpran";
+    break;
+  case lpran:
+    return "lpran";
+    break;
+  case multisym:
+    return "mulitsym";
+    break;
+  case plussym:
+    return "plussym";
+    break;
+  case ggsym:
+    return "ggsym";
+    break;
+  case llsym:
+    return "llsym";
+    break;
+  case real:
+    return "real";
+    break;
+  case integer:
+    return "integer";
+    break;
+  case cinsym:
+    return "cinsym";
+    break;
+  case coutsym:
+    return "coutsym";
+    break;
+  case identifier:
+    return "id";
+    break;
+  case _ERROR_:
+    return "error";
+  default:
+    break;
+  }
+  return "eof";
 }
