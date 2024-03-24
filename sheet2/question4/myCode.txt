@@ -1,8 +1,6 @@
-program errors was
-var a,b : integer ;
-var p,b ; boolean ;
+program illegal is
+var a : boolean;
+var x : integer;
 begin
-a := 34;
-if b≠0 then p := true else p := (a+1);
-write p; write q
+a := (5 + x)
 end

@@ -67,9 +67,7 @@ token_t scanner::get_token() {
   while (!f.eof()) {
     switch (current_state) {
     case q0:
-      if (!f.eof()) {
-        f.get(c);
-      }
+      f.get(c);
       token += c;
       if (isdigit(c)) {
         current_state = q1;
@@ -100,9 +98,7 @@ token_t scanner::get_token() {
       }
       break;
     case q1:
-      if (!f.eof()) {
-        f.get(c);
-      }
+      f.get(c);
       if (isdigit(c)) {
         token += c;
         current_state = q1;
@@ -115,9 +111,7 @@ token_t scanner::get_token() {
       return {numeral, token};
       break;
     case q3:
-      if (!f.eof()) {
-        f.get(c);
-      }
+      f.get(c);
       if (isalnum(c)) {
         token += c;
         current_state = q3;
@@ -136,9 +130,7 @@ token_t scanner::get_token() {
       return {strong_operation, token};
       break;
     case q7:
-      if (!f.eof()) {
-        f.get(c);
-      }
+      f.get(c);
       if (c == '>') {
         token += c;
         current_state = q8;
@@ -156,9 +148,7 @@ token_t scanner::get_token() {
       return {relation_operation, token};
       break;
     case q11:
-      if (!f.eof()) {
-        f.get(c);
-      }
+      f.get(c);
       if (c == '=') {
         token += c;
         current_state = q12;
@@ -185,12 +175,21 @@ token_t scanner::get_token() {
       return {rpare, token};
       break;
     case q19:
-      return {colon, token};
+      f.get(c);
+      if (c == '=') {
+        token += c;
+        current_state = q20;
+      } else {
+        f.putback(c);
+        current_state = q21;
+      }
       break;
+    case q20:
+      return {assign, token};
+    case q21:
+      return {colon, token};
     case dead_state:
       return {_error_, token};
-      break;
-    default:
       break;
     }
   }
@@ -235,10 +234,10 @@ string scanner::token_to_string(tokens t) {
     return "left_paren";
     break;
   case assign:
-    return "assign_operation";
+    return "assigning";
     break;
   case colon:
-    return "colon_separate";
+    return "__colon__";
     break;
   case separator:
     return "separator";

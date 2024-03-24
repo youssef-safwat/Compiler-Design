@@ -29,6 +29,8 @@ enum states {
   q17,
   q18,
   q19,
+  q20,
+  q21,
   dead_state
 };
 
