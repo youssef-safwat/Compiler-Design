@@ -161,7 +161,7 @@ token_t scanner::get_token() {
 // Declare display_token function
 void scanner::display_token() {
   token_t t;
-  cout << "Tokens\t\tLexems\n-------------------------\n";
+  cout << "Tokens\t\t\tLexems\n--------------------------------\n";
   do {
     t = get_token();
     cout << token_to_string(t.name) << "\t\t" << t.value << '\n';
@@ -172,42 +172,42 @@ void scanner::display_token() {
 string scanner::token_to_string(tokens t) {
   switch (t) {
   case rpran:
-    return "rpran";
+    return "rpran_sym";
     break;
   case lpran:
-    return "lpran";
+    return "lpran_sym";
     break;
   case multisym:
-    return "mulitsym";
+    return "muli_tsym";
     break;
   case plussym:
-    return "plussym";
+    return "plus_sym";
     break;
   case ggsym:
-    return "ggsym";
+    return "output_sym";
     break;
   case llsym:
-    return "llsym";
+    return "input_sym";
     break;
   case real:
-    return "real";
+    return "real_number";
     break;
   case integer:
-    return "integer";
+    return "int_number";
     break;
   case cinsym:
-    return "cinsym";
+    return "cin__sym";
     break;
   case coutsym:
-    return "coutsym";
+    return "cout_sym";
     break;
   case identifier:
-    return "id";
+    return "identifier";
     break;
   case _ERROR_:
-    return "error";
+    return "syntax_error";
   default:
     break;
   }
-  return "eof";
+  return "end_of_file";
 }
