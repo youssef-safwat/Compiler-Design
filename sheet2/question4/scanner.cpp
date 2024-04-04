@@ -93,6 +93,10 @@ token_t scanner::get_token() {
         current_state = q18;
       } else if (c == ':') {
         current_state = q19;
+      } else if (c == ']') {
+        current_state = q22;
+      } else if (c == '[') {
+        current_state = q23;
       } else {
         current_state = dead_state;
       }
@@ -188,6 +192,10 @@ token_t scanner::get_token() {
       return {assign, token};
     case q21:
       return {colon, token};
+    case q22:
+      return {rsqrbracket, token};
+    case q23:
+      return {lsqrbracket, token};
     case dead_state:
       return {_error_, token};
       break;
@@ -247,6 +255,12 @@ string scanner::token_to_string(tokens t) {
     break;
   case end_of_file:
     return "end_of_file";
+    break;
+  case rsqrbracket:
+    return "rsqrbracket";
+    break;
+  case lsqrbracket:
+    return "lsqrbracket";
     break;
   default:
     break;

@@ -31,6 +31,8 @@ enum states {
   q19,
   q20,
   q21,
+  q22,
+  q23,
   dead_state
 };
 
@@ -42,6 +44,8 @@ enum tokens {
   strong_operation,
   relation_operation,
   reserved_word,
+  rsqrbracket,
+  lsqrbracket,
   rpare,
   lpare,
   assign,

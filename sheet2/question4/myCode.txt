@@ -1,6 +1,6 @@
 program illegal is
 var a : boolean;
-var x : integer;
+var x[4, 5, 6] : integer;
 begin
 a := (5 + x)
 end
